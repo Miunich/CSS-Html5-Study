@@ -2,9 +2,11 @@
   "name": "festivalmusica-ini",
   "version": "1.0.0",
   "description": "Aprendiendo SASS y  NPM",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "sass": "sass --watch src/img/scss:build/css",
+    "dev": "gulp dev"
   },
   "keywords": [
     "SASS",
@@ -13,7 +15,9 @@
   ],
   "author": "Sergio Espinoza",
   "license": "ISC",
-  "dependencies": {
-    "sass": "^1.80.2"
+  "devDependencies": {
+    "gulp": "^5.0.0",
+    "gulp-sass": "^5.1.0",
+    "sass": "^1.80.3"
   }
 }
