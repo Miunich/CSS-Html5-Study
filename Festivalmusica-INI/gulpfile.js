@@ -5,7 +5,7 @@ import gulpSass from 'gulp-sass';
 const sass = gulpSass(dartSass);
 
 export function css(done){
-    src("src/img/scss/app.scss")
+    src("src/scss/app.scss")
     .pipe( sass().on('error', sass.logError) )
     .pipe( dest('build/css') )
 
@@ -13,5 +13,5 @@ export function css(done){
 }
 
 export function dev(){
-    watch("src/img/scss/**/*.scss", css);// el * significa que cualquier archivo con la extensión .scss y el ** significa que cualquier archivo dentro de la carpeta scss
+    watch("src/scss/**/*.scss", css);// el * significa que cualquier archivo con la extensión .scss y el ** significa que cualquier archivo dentro de la carpeta scss
 }
