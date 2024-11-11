@@ -435,15 +435,33 @@ h4 {
 .dark-mode a, .dark-mode h1, .dark-mode h2, .dark-mode h3, .dark-mode h4 {
   color: #e1e1e1;
 }
-.dark-mode .anuncio {
+.dark-mode .anuncio,
+.dark-mode .resumen-propiedad {
   background-color: #333333;
   border: 1px solid #333333;
 }
-.dark-mode .anuncio .precio {
+.dark-mode .anuncio .precio,
+.dark-mode .resumen-propiedad .precio {
   color: #71B100;
 }
-.dark-mode .anuncio .icono {
+.dark-mode .anuncio .icono,
+.dark-mode .resumen-propiedad .icono {
   filter: invert(100%);
+}
+.dark-mode .texto-nosotros blockquote {
+  color: #FFFFFF;
+}
+.dark-mode .formulario label,
+.dark-mode .formulario legend,
+.dark-mode .formulario p {
+  color: #e1e1e1;
+}
+.dark-mode .formulario input:not([type=submit]),
+.dark-mode .formulario textarea,
+.dark-mode .formulario select {
+  background-color: #333333;
+  border: 1px solid #333333;
+  color: #FFFFFF;
 }
 
 /** UI **/
@@ -498,6 +516,7 @@ h4 {
 .footer .navegacion {
   visibility: visible;
   opacity: 1;
+  height: auto;
 }
 .footer .copyright {
   color: #FFFFFF;
@@ -545,7 +564,8 @@ h4 {
 .navegacion {
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0.3s ease-in-out, opacity 0.5s linear;
+  height: 0;
+  transition: visibility 0.3s ease-in-out, opacity 0.5s linear, height 0.5s linear;
 }
 @media (min-width: 768px) {
   .navegacion {
@@ -592,10 +612,12 @@ h4 {
 .mostrar {
   visibility: visible;
   opacity: 1;
+  height: auto;
 }
 @media (min-width: 768px) {
   .mostrar {
     display: flex;
+    height: auto;
   }
 }
 
@@ -809,7 +831,7 @@ h4 {
 .texto-nosotros blockquote {
   font-weight: 900;
   font-size: 2.2rem;
-  margin: 0;
+  margin: 3rem 0 0 0;
   padding-left: 1rem 0 3rem 0;
 }
 
