@@ -26,6 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // var_dump($_POST);
     // echo "</pre>";
 
+    // echo "<pre>";
+    // var_dump($_FILES);
+    // echo "</pre>";
+
+    
+
     $titulo = mysqli_real_escape_string($db, $_POST['titulo']);
     $precio = mysqli_real_escape_string($db, $_POST['precio']);
     $descripcion = mysqli_real_escape_string($db, $_POST['descripcion']);
@@ -34,6 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $estacionamiento = mysqli_real_escape_string($db, $_POST['estacionamiento']);
     $vendedor_id = mysqli_real_escape_string($db, $_POST['vendedor']);
     $creado = date('Y/m/d');
+
+    //Asignar files hacia una variable
+    $imagen = $_FILES['imagen'];
+
+
 
     if (!$titulo) {
         $errores[] = "Debes añadir un titulo";
@@ -58,22 +69,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errores[] = "Debes añadir un vendedor";
     }
 
+    if(!$imagen['name'] || $imagen['error']) {
+        $errores[] = "La imagen es obligatoria";
+    }
+
+    //Validar por tamaño (1mb maximo)
+    $medida = 1000 * 1000;
+
+    if($imagen['size'] > $medida){
+        $errores[] = "La imagen es muy pesada";
+    }
+
     // echo "<pre>";
     // var_dump($errores);
     // echo "</pre>";
 
     //Revisar que el arreglo de errores este vacio
     if(empty($errores)){
+        //Subida de archivos
+
+
+        //Crear carpeta
+        $carpetaImagenes = '../../imagenes/';
+        if(!is_dir($carpetaImagenes)){
+            mkdir($carpetaImagenes);
+        }
+
+        //Subir la imagen
+
+        move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $imagen['name']);
+        $imagen = $imagen['name'];
+        
+
         //Insertar en la base de datos
-        $query = "INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, creado, vendedor_id) VALUES ('$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento','$creado', '$vendedor_id')";
+        $query = "INSERT INTO propiedades (titulo, precio,imagen, descripcion, habitaciones, wc,
+         estacionamiento, creado, vendedor_id) VALUES ('$titulo', '$precio', 
+         '$imagen','$descripcion', '$habitaciones', '$wc', '$estacionamiento',
+         '$creado', '$vendedor_id')";
     
         // echo $query;
         $resultado = mysqli_query($db, $query);
     
         if($resultado){
             //Redireccionar al usuario
-            header('Location: /admin');
-
+            header('Location: /admin?resultado=1');
         }
 
     }   
@@ -97,7 +136,7 @@ include '../../includes/templates/header.php';
     <?php endforeach; ?>
 
 
-    <form action="" class="formulario" method="POST" action="/admin/propiedades/crear.php">
+    <form action="" class="formulario" method="POST" action="/admin/propiedades/crear.php" enctype="multipart/form-data" >
 
         <fieldset>
             <legend>Información General</legend>

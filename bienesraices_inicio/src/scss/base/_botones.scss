@@ -11,3 +11,8 @@
     @include boton($verde,inline-block);
     background-color: $verde;
 }
+
+.boton-rojo-block{
+    @include boton($rojo,block);
+    background-color: $rojo;
+}
