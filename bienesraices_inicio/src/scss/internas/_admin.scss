@@ -11,6 +11,8 @@
 
     &.exito {
         background-color: $verde;
+        //centrar texto
+        text-align: center;
     }
 }
 table.propiedades{
@@ -29,4 +31,7 @@ table.propiedades{
     .imagen-tabla{
         width: 10rem;
     }
+}
+.imagen-small{
+    width: 20rem;
 }
