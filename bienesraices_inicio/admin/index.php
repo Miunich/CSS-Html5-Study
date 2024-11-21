@@ -21,21 +21,6 @@ $resultado = $_GET['resultado'] ?? null;
 require '../includes/funciones.php';
 include '../includes/templates/header.php';
 
-// if($_SERVER['REQUEST_METHOD'] === 'POST'){
-//     $id = $_POST['id'];
-//     $id = filter_var($id, FILTER_VALIDATE_INT);
-
-//     if($id){
-//         $query = "DELETE FROM propiedades WHERE id = $id";
-
-//         $resultadoConsulta = mysqli_query($db, $query);
-
-//         if($resultado){
-//             header('Location: /admin');
-//         }
-//     }
-// }
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'] ?? null;
 
@@ -58,8 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $resultadoConsulta = mysqli_query($db, $queryDelete);
 
                 if ($resultadoConsulta) {
-                    header('Location: /admin');
-                    exit;
+                    header('Location: /admin?resultado=3');
+                    
                 } else {
                     echo "Error al eliminar la propiedad: " . mysqli_error($db);
                 }
@@ -91,6 +76,8 @@ if (!$resultadoConsulta) {
         <p class="alerta exito">Anuncio creado correctamente</p>
     <?php elseif ($resultado == '2'): ?>
         <p class="alerta exito">Anuncio actualizado correctamente</p>
+    <?php elseif ($resultado == '3'): ?>
+        <p class="alerta error">Anuncio Borrado correctamente</p>
     <?php endif ?>
 
     <a href="/admin/propiedades/crear.php" class="boton boton-verde"> Nueva Propiedad</a>
