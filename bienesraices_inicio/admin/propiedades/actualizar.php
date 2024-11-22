@@ -1,4 +1,13 @@
 <?php
+// session_start();
+
+require '../../includes/funciones.php';
+$auth = estaAutenticado();
+
+
+if(!$auth){
+    header('Location: /');
+}
 
 //Validar la URL por ID valido
 $id = $_GET["id"];
@@ -43,13 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo "<pre>";
     var_dump($_POST);
     echo "</pre>";
-
-
-    // echo "<pre>";
-    // var_dump($_FILES);
-    // echo "</pre>";
-
-    
+  
 
     $titulo = mysqli_real_escape_string($db, $_POST['titulo']);
     $precio = mysqli_real_escape_string($db, $_POST['precio']);
@@ -124,9 +127,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "Imagen procesada correctamente";
     }
 
-    // echo "<pre>";
-    // var_dump($errores);
-    // echo "</pre>";
 
     //Revisar que el arreglo de errores este vacio
     if(empty($errores)){
@@ -159,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 }
-require '../../includes/funciones.php';
+
 include '../../includes/templates/header.php';
 ?>
 

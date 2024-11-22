@@ -3,6 +3,13 @@
 require '../../includes/config/database.php';
 
 $db = conectarDB();
+require '../../includes/funciones.php';
+$auth = estaAutenticado();
+
+
+if(!$auth){
+    header('Location: /');
+}
 
 //Consultar para obtener vendedores
 $consulta = "SELECT * FROM vendedores";
@@ -119,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 }
-require '../../includes/funciones.php';
+
 include '../../includes/templates/header.php';
 ?>
 

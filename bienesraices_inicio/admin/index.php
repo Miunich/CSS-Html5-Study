@@ -1,6 +1,13 @@
 <?php
 
 
+require '../includes/funciones.php';
+$auth = estaAutenticado();
+
+
+if(!$auth){
+    header('Location: /');
+}
 
 //importar la conexion
 require '../includes/config/database.php';
@@ -18,7 +25,7 @@ $resultado = $_GET['resultado'] ?? null;
 
 
 //incluye un template
-require '../includes/funciones.php';
+
 include '../includes/templates/header.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -44,7 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 if ($resultadoConsulta) {
                     header('Location: /admin?resultado=3');
-                    
                 } else {
                     echo "Error al eliminar la propiedad: " . mysqli_error($db);
                 }
