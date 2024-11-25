@@ -1,16 +1,44 @@
-<?php include 'includes/header.php';
+<?php 
+declare(strict_types= 1);
 
+include 'includes/header.php';
+//Encapsulación
+class Producto {
+    //Public - Se puede acceder y modificar en cualquier lugar (clase y objeto)
+    //Protected - Se puede acceder y modificar en la clase y subclases
+    //Private - Solo se puede acceder y modificar en la clase
 
-$nombre = "Juan";
+    public function __construct( protected string $nombre, public int $precio, public bool $disponible) {
+        
+    }
 
-echo $nombre;
+    public function mostrarProducto(){
+        echo "El producto es: " . $this->nombre . " y su precio es de: " . $this->precio;
 
-define("constante", "Este es el valor de una constante");
+    }
+    public function getNombre(){
+        return $this->nombre;
+    }
 
-echo constante;
+    public function setNombre(string $nombre){
+        $this->nombre = $nombre;
+    }
 
-const constante2 = "Este es el valor de una constante 2";
+}
+$producto = new Producto('Tablet', 200, true);
+// $producto->mostrarProducto();
+echo $producto->getNombre();
+$producto->setNombre('Nuevo Nombre');
 
-echo constante2;
+echo'<pre>';
+var_dump($producto);
+echo'</pre>';
 
-include 'includes/footer.php';
+$producto2 = new Producto('Monitor Curvo', 300, true);
+// $producto2 ->mostrarProducto();
+
+echo'<pre>';
+var_dump($producto2);
+echo'</pre>';
+
+include 'includes/footer.php'; ?>
