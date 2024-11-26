@@ -40,6 +40,8 @@ class Automovil extends Transporte {
     }
 }
 
+
+echo "<hr>";
 $camion = new Automovil(4,3, "Camión","Manual");
 echo $camion->getInfo();
 echo $camion->getTransmision();

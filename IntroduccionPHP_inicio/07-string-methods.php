@@ -1,29 +1,45 @@
 <?php include 'includes/header.php';
 
-$nombreCliente = "Juan Hormazabal";
 
-//Conocer extension de un string
-echo strlen($nombreCliente); // 15
+interface TransporteInterfaz{
+    public function getInfo() : string;
+    public function getRuedas() : int;
+}
+Class Transporte implements TransporteInterfaz{
+    public function __construct(protected int $ruedas, protected int $capacidad, protected string $nombre) {
+        
+    }
 
-//Eliminar espacios en blanco
-$texto = trim($nombreCliente);
-echo strlen($texto); // saca los espacios en blanco del inicio y final
+    public function getInfo(): string {
+        return $this->nombre ." tiene " . $this->ruedas . " ruedas y una capacidad de " . $this->capacidad . " personas ";
+    }
 
-//Convertir a mayusculas
-echo strtoupper($nombreCliente);
+    public function getRuedas(): int {
+        return $this->ruedas;
+    }
+    
+}
 
-//Convertir a minusculas
-echo strtolower($nombreCliente);
+class Automovil extends Transporte implements TransporteInterfaz{
+    public function __construct(protected int $ruedas, protected int $capacidad, protected string $nombre, protected string $color) {
+        
+    }
+    public function getInfo(): string {
+        return $this->nombre ." tiene " . $this->ruedas . " ruedas y una capacidad de " . $this->capacidad . " personas y es de color ". $this->color;
+    }
 
-echo str_replace('Juan', 'J', $nombreCliente);
+    public function getColor() : string {
+        return "El color es " . $this->color;
+    }
 
-//Revisar si un string existe o no
-echo strpos($nombreCliente, 'Juan'); // 0
+}
 
-$tipoCliente = "Premium";
-echo "<br>";
+echo "<pre>";
+var_dump($auto = new Automovil(4, 4, "Auto", "Rojo"));
 
-echo "El cliente " . $nombreCliente . " es " . $tipoCliente;
-
+echo $auto->getInfo();
+echo "<hr>";
+echo $auto->getColor();
+echo "</pre>";
 
 include 'includes/footer.php';

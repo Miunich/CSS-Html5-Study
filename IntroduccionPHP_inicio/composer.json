@@ -1,0 +1,17 @@
+{
+    "name": "aprendiendo/namespaces-autoload",
+    "description": "Aprendiendo lo básico",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            
+            "App\\" : "./clases"
+        }
+    },
+    "authors": [
+        {
+            "name": "Miunich"
+        }
+    ],
+    "require": {}
+}
