@@ -21,7 +21,7 @@ include 'includes/templates/header.php';
         ?>
     </div>
 
-    <p class="copyright">Todos los derechos Reservador 2024 &copy;</p>
+    <p class="copyright">Todos los derechos Reservados 2024 &copy;</p>
 </footer>
 <script src="build/js/bundle.min.js"></script>
 </body>
