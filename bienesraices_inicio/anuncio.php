@@ -8,8 +8,8 @@ if (empty($id)) {
 }
 
 //Importar la conexion
-
-require 'includes/config/database.php';
+require 'includes/app.php';
+// require 'includes/config/database.php';
 $db = conectarDB();
 
 //Consultar
@@ -27,7 +27,7 @@ if (mysqli_num_rows($resultado) === 0) {
 }
 
 
-require 'includes/funciones.php';
+// require 'includes/funciones.php';
 include 'includes/templates/header.php';
 ?>
 

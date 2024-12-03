@@ -3,11 +3,11 @@
 require '../../includes/config/database.php';
 
 $db = conectarDB();
-require '../../includes/funciones.php';
+require '../../includes/app.php';
 $auth = estaAutenticado();
 
 
-if(!$auth){
+if (!$auth) {
     header('Location: /');
 }
 
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // var_dump($_FILES);
     // echo "</pre>";
 
-    
+
 
     $titulo = mysqli_real_escape_string($db, $_POST['titulo']);
     $precio = mysqli_real_escape_string($db, $_POST['precio']);
@@ -59,31 +59,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!$precio) {
         $errores[] = "Debes añadir un precio";
     }
-    
+
     if (strlen($descripcion) < 50) {
         $errores[] = "Debes añadir una descripción y no debe ser menor a 50 caracteres";
-    } 
+    }
     if (!$habitaciones) {
         $errores[] = "Debes añadir el número de habitaciones";
-    } 
+    }
     if (!$wc) {
-        $errores[] = "Debes añadir el número de baños"; 
+        $errores[] = "Debes añadir el número de baños";
     }
     if (!$estacionamiento) {
         $errores[] = "Debes añadir el número de estacionamientos";
-    } 
+    }
     if (!$vendedor_id) {
         $errores[] = "Debes añadir un vendedor";
     }
 
-    if(!$imagen['name'] || $imagen['error']) {
+    if (!$imagen['name'] || $imagen['error']) {
         $errores[] = "La imagen es obligatoria";
     }
 
     //Validar por tamaño (1mb maximo)
     $medida = 1000 * 1000;
 
-    if($imagen['size'] > $medida){
+    if ($imagen['size'] > $medida) {
         $errores[] = "La imagen es muy pesada";
     }
 
@@ -92,13 +92,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // echo "</pre>";
 
     //Revisar que el arreglo de errores este vacio
-    if(empty($errores)){
+    if (empty($errores)) {
         //Subida de archivos
 
 
         //Crear carpeta
         $carpetaImagenes = '../../imagenes/';
-        if(!is_dir($carpetaImagenes)){
+        if (!is_dir($carpetaImagenes)) {
             mkdir($carpetaImagenes);
         }
 
@@ -106,28 +106,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $imagen['name']);
         $imagen = $imagen['name'];
-        
+
 
         //Insertar en la base de datos
         $query = "INSERT INTO propiedades (titulo, precio,imagen, descripcion, habitaciones, wc,
          estacionamiento, creado, vendedor_id) VALUES ('$titulo', '$precio', 
          '$imagen','$descripcion', '$habitaciones', '$wc', '$estacionamiento',
          '$creado', '$vendedor_id')";
-    
+
         // echo $query;
         $resultado = mysqli_query($db, $query);
-    
-        if($resultado){
+
+        if ($resultado) {
             //Redireccionar al usuario
             header('Location: /admin?resultado=1');
         }
-
-    }   
-
-
+    }
 }
 
 include '../../includes/templates/header.php';
+$queryVendedores = "SELECT vendedor_id, nombre, apellido FROM vendedores";
+$resultadoVendedores = mysqli_query($db, $queryVendedores);
 ?>
 
 
@@ -136,14 +135,14 @@ include '../../includes/templates/header.php';
 
 
     <a href="/admin" class="boton boton-verde"> Volver</a>
-    <?php foreach($errores as $error): ?>
+    <?php foreach ($errores as $error): ?>
         <div class="alerta error">
             <?php echo $error; ?>
         </div>
     <?php endforeach; ?>
 
 
-    <form action="" class="formulario" method="POST" action="/admin/propiedades/crear.php" enctype="multipart/form-data" >
+    <form action="" class="formulario" method="POST" action="/admin/propiedades/crear.php" enctype="multipart/form-data">
 
         <fieldset>
             <legend>Información General</legend>
@@ -152,7 +151,7 @@ include '../../includes/templates/header.php';
             <input type="text" id="titulo" name="titulo" placeholder="Titulo Propiedad" value="<?php echo $titulo; ?>">
 
             <label for="precio">Precio:</label>
-            <input type="number" id="precio" name="precio" placeholder="Precio Propiedad"value="<?php echo $precio; ?>">
+            <input type="number" id="precio" name="precio" placeholder="Precio Propiedad" value="<?php echo $precio; ?>">
 
             <label for="imagen">Imagen:</label>
             <input type="file" id="imagen" accept="image/jpeg, image/png" name="imagen">
@@ -167,7 +166,7 @@ include '../../includes/templates/header.php';
             <legend>Información Propiedad</legend>
 
             <label for="habitaciones">Habitaciones:</label>
-            <input type="number" id="habitaciones" name="habitaciones" placeholder="Ej. 3" min="1" max="9"value="<?php echo $habitaciones; ?>">
+            <input type="number" id="habitaciones" name="habitaciones" placeholder="Ej. 3" min="1" max="9" value="<?php echo $habitaciones; ?>">
             <label for="wc">Baños:</label>
             <input type="number" id="wc" name="wc" placeholder="Ej. 2" min="1" max="3" value="<?php echo $wc; ?>">
 
@@ -179,11 +178,13 @@ include '../../includes/templates/header.php';
         <fieldset>
             <legend>Vendedor</legend>
 
-            <select name="vendedor" id="vendedor" value="<?php echo $vendedor_id; ?>">
+            <select name="vendedor" id="vendedor">
                 <option value="">-- Seleccione --</option>
-                <?php while($vendedor = mysqli_fetch_assoc($resultado)): ?>
-                    <option <?php echo $vendedor_id === $vendedor['id'] ? 'selected' : ''; ?> value="<?php echo $vendedor['id']; ?>"><?php echo $vendedor['nombre'] . " " . $vendedor['apellido']; ?></option>
-                <?php endwhile; ?>                
+                <?php while ($vendedor = mysqli_fetch_assoc($resultadoVendedores)) : ?>
+                    <option value="<?php echo $vendedor['vendedor_id']; ?>" <?php echo $vendedor_id == $vendedor['vendedor_id'] ? 'selected' : ''; ?>>
+                        <?php echo $vendedor['nombre'] . " " . $vendedor['apellido']; ?>
+                    </option>
+                <?php endwhile; ?>
             </select>
 
         </fieldset>
