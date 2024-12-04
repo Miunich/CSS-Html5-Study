@@ -27,3 +27,10 @@ function estaAutenticado() : bool {
 
     return $auth;
 }
+
+function debuguear($variable){
+    
+    var_dump($variable);
+    exit;
+    
+}

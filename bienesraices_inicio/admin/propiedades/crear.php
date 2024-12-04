@@ -1,15 +1,21 @@
 <?php
 //Base de datos
-require '../../includes/config/database.php';
+// require '../../includes/config/database.php';
+require '../../includes/app.php';
+
+use App\Propiedad;
+// $propiedad = new propiedad();
+
+// debuguear($propiedad);
 
 $db = conectarDB();
-require '../../includes/app.php';
-$auth = estaAutenticado();
+// $auth = estaAutenticado();
+estaAutenticado();
 
 
-if (!$auth) {
-    header('Location: /');
-}
+// if (!$auth) {
+//     header('Location: /');
+// }
 
 //Consultar para obtener vendedores
 $consulta = "SELECT * FROM vendedores";
@@ -37,6 +43,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // var_dump($_FILES);
     // echo "</pre>";
 
+    $propiedad = new Propiedad($_POST);
+
+    $propiedad->guardar();
+
+    // debuguear($propiedad);
+    
 
 
     $titulo = mysqli_real_escape_string($db, $_POST['titulo']);
@@ -87,9 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errores[] = "La imagen es muy pesada";
     }
 
-    // echo "<pre>";
-    // var_dump($errores);
-    // echo "</pre>";
+   
 
     //Revisar que el arreglo de errores este vacio
     if (empty($errores)) {
@@ -108,11 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $imagen = $imagen['name'];
 
 
-        //Insertar en la base de datos
-        $query = "INSERT INTO propiedades (titulo, precio,imagen, descripcion, habitaciones, wc,
-         estacionamiento, creado, vendedor_id) VALUES ('$titulo', '$precio', 
-         '$imagen','$descripcion', '$habitaciones', '$wc', '$estacionamiento',
-         '$creado', '$vendedor_id')";
+        
 
         // echo $query;
         $resultado = mysqli_query($db, $query);
@@ -178,7 +184,7 @@ $resultadoVendedores = mysqli_query($db, $queryVendedores);
         <fieldset>
             <legend>Vendedor</legend>
 
-            <select name="vendedor" id="vendedor">
+            <select name="vendedor_id" id="vendedor">
                 <option value="">-- Seleccione --</option>
                 <?php while ($vendedor = mysqli_fetch_assoc($resultadoVendedores)) : ?>
                     <option value="<?php echo $vendedor['vendedor_id']; ?>" <?php echo $vendedor_id == $vendedor['vendedor_id'] ? 'selected' : ''; ?>>
